@@ -19,7 +19,7 @@ class MapView extends Component {
 
   componentDidMount() {
     // Had a CORS issue with trying to directly access ipify so went through proxy server
-    fetch(`https://cors-anywhere.herokuapp.com/https://geo.ipify.org/api/v1?apiKey=at_F3wbWYzAHjbk3RKqmTypEFn5oJDTk&ipAddress=%20103.233.220.252`)
+    fetch(`https://cors-anywhere.herokuapp.com/https://geo.ipify.org/api/v1?apiKey=&ipAddress=%20103.233.220.252`)
       .then((response) => response.json())
       .then((data) => this.setState({ geoData: data }))
   }

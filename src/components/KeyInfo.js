@@ -16,7 +16,7 @@ class KeyInfo extends Component {
 
   async handleAPIData(geoData) {
     try {
-      const response = await fetch(`https://cors-anywhere.herokuapp.com/https://geo.ipify.org/api/v1?apiKey=at_F3wbWYzAHjbk3RKqmTypEFn5oJDTk&ipAddress=${searchQuery}`);
+      const response = await fetch(`https://cors-anywhere.herokuapp.com/https://geo.ipify.org/api/v1?apiKey=&ipAddress=${searchQuery}`);
       const json = await response.json();
       this.setState({ geoData: json })
     } catch (error) {
