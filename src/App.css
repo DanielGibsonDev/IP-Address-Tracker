@@ -19,4 +19,12 @@ body {
   border: 2px solid #000 !important;
 }
 
+.error-border {
+  border: 2px solid #D8000C !important;
+}
+
+.hide-error-message {
+  padding: 0 !important;
+}
+
 #mapid { height: 180px; }

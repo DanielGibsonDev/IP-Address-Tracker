@@ -3,10 +3,31 @@ import styled from 'styled-components';
 import '../App.css';
 
 class KeyInfo extends Component {
-  state = {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      // ipAddress: this.props,
+      location: '',
+      timezone: '',
+      isp: '',
+    }
+  }
+
+  async handleAPIData(geoData) {
+    try {
+      const response = await fetch(`https://cors-anywhere.herokuapp.com/https://geo.ipify.org/api/v1?apiKey=at_F3wbWYzAHjbk3RKqmTypEFn5oJDTk&ipAddress=${searchQuery}`);
+      const json = await response.json();
+      this.setState({ geoData: json })
+    } catch (error) {
+      console.log(error);
+      this.setState({ errorAPI: error })
+    }
   }
 
   render() {
+
+    console.log(this.props)
     return (
       <Container>
         <KeyInfoElement>

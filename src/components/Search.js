@@ -3,31 +3,45 @@ import styled from 'styled-components';
 import '../App.css';
 
 class Search extends Component {
-  state = {
-    searchInput: '',
-    hasBorder: false,
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      searchInput: "",
+      hasBorder: false,
+    }
   }
 
   handleOnChange = event => {
     this.setState({
       searchInput: event.target.value,
-      hasBoarder: event.target.value === '' ? false : true
+      hasBorder: event.target.value === '' ? false : true,
     })
+  }
+
+  handleSubmit = event => {
+    this.props.onSearchSubmit(this.state.searchInput)
+    event.preventDefault();
   }
 
   render() {
     return (
-      <SearchForm>
+      <SearchForm onSubmit={this.handleSubmit}>
         <WhiteBackground />
         <InputEffect>
           <SearchInput 
             type="text" 
             placeholder="" 
-            className={ this.state.hasBoarder ? "has-content" : "" } 
+            className={` ${this.state.hasBorder ? "has-content" : ""} ${this.props.inputError ? "error-border" : ""}`}
             value={ this.state.searchInput } 
             onChange={ this.handleOnChange } 
           />
           <Label>Search for any IP address or domain</Label>
+          <ErrorMessage 
+            className={ this.props.inputError ? "" : "hide-error-message"}
+          >
+            {this.props.inputError}
+          </ErrorMessage>
         </InputEffect>
         
         <SearchSubmit type="submit">{iconArrow}</SearchSubmit>
@@ -122,6 +136,19 @@ const SearchSubmit = styled.button`
   &:hover {
     background-color: var(--very-dark-gray);
   }
+`
+
+const ErrorMessage = styled.div`
+  position: absolute;
+  bottom: -27px;
+  left: 25px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #D8000C;
+  background-color: #FFBABA;
+  padding: 3px 10px;
+  border-radius: 0 0 10px 10px;
+
 `
 
 const iconArrow = <svg xmlns="http://www.w3.org/2000/svg" width="11" height="14"><path fill="none" stroke="#FFF" strokeWidth="3" d="M2 1l6 6-6 6"/></svg>
