@@ -1,50 +1,72 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import '../App.css';
+import loadingGif from '../images/loading-img.svg';
 
 class KeyInfo extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      // ipAddress: this.props,
+      ipAddress: '',
       location: '',
       timezone: '',
       isp: '',
     }
   }
 
-  async handleAPIData(geoData) {
-    try {
-      const response = await fetch(`https://cors-anywhere.herokuapp.com/https://geo.ipify.org/api/v1?apiKey=&ipAddress=${searchQuery}`);
-      const json = await response.json();
-      this.setState({ geoData: json })
-    } catch (error) {
-      console.log(error);
-      this.setState({ errorAPI: error })
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.geoData !== this.props.geoData) {
+      this.handlePropUpdate()
     }
   }
 
-  render() {
+  handlePropUpdate() {
+    if (this.props.geoData) {
+      const { ip, city, country_code, postal_code, isp, timezone_name } = this.props.geoData
+      const ct = require('countries-and-timezones');
+      const timezone = ct.getTimezone(timezone_name)
+      this.setState({
+        ipAddress: ip ? ip : '',
+        location: `${city ? city : ''}, ${country_code ? country_code : ''} ${postal_code ? postal_code : ''}`,
+        timezone: `${timezone ? "UTC" : ''} ${timezone ? timezone.utcOffsetStr : ''}`,
+        isp : isp ? isp : ''
+      })
+    }
+  } 
 
-    console.log(this.props)
+  render() {
+    const { ipAddress, location, timezone, isp } = this.state
     return (
       <Container>
         <KeyInfoElement>
           <Heading>IP Address</Heading>
-          <Value>192.212.174.101</Value>
+          <Value>
+            { !(ipAddress) && ( <LoadingImg src={loadingGif}></LoadingImg> )}
+            {ipAddress}
+          </Value>
         </KeyInfoElement>
         <KeyInfoElement>
           <Heading>Location</Heading>
-          <Value>Brooklyn, NY 10001</Value>
+          <Value>
+            { !(location) && ( <LoadingImg src={loadingGif}></LoadingImg> )}
+            {location}
+          </Value>
         </KeyInfoElement>
         <KeyInfoElement>
           <Heading>TimeZone</Heading>
-          <Value>192</Value>
+          <Value>
+            { !(timezone) && ( <LoadingImg src={loadingGif}></LoadingImg> )}
+            {timezone}
+          </Value>
         </KeyInfoElement>
         <KeyInfoElement>
           <Heading>ISP</Heading>
-          <Value>192</Value>
+          <Value>
+            { !(isp) && ( <LoadingImg src={loadingGif}></LoadingImg> )}
+            {isp}
+          </Value>
         </KeyInfoElement>
       </Container>
     )
@@ -73,7 +95,7 @@ const KeyInfoElement = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 34px 32px 20px;
+  padding: 34px 40px 20px;
   width: 195px;
   position: relative;
   &:not(:last-child)::after {
@@ -116,5 +138,20 @@ const Value = styled.h3`
     font-size: 1.25rem;
   }
 `
+
+const LoadingImg = styled.img `
+  display: block;
+  padding-left: 10px;
+`
+
+
+// const LoadingGif = () => {
+//   return <div>
+//     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: rgb(255, 255, 255) none repeat scroll 0% 0%; display: block; shape-rendering: auto;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+//     <circle cx="50" cy="50" fill="none" stroke="#4750a9" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
+//       <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+//     </circle></svg>
+//   </div>
+// }
 
 export default KeyInfo;

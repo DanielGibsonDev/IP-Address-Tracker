@@ -1,53 +1,75 @@
 import React, { Component } from 'react';
-import GoogleMapReact from 'google-map-react';
-import isEmpty from 'lodash.isempty';
+import GoogleMap from 'google-map-react';
 import styled from 'styled-components';
 import '../App.css';
+import loadingGif from '../images/loading-img-large.svg';
 
 class MapView extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      geoData: [],
-      defaultCenter: {
-        lat: -36.8568,
-        lng: 174.759
+      hasData: false,
+      mapCenter: {
+        lat: '',
+        lng: ''
       },
     }
   }
 
-  componentDidMount() {
-    // Had a CORS issue with trying to directly access ipify so went through proxy server
-    fetch(`https://cors-anywhere.herokuapp.com/https://geo.ipify.org/api/v1?apiKey=&ipAddress=%20103.233.220.252`)
-      .then((response) => response.json())
-      .then((data) => this.setState({ geoData: data }))
+  componentDidUpdate(prevProps) {
+    if (prevProps.geoData !== this.props.geoData) {
+      this.handlePropUpdate()
+    }
+  }
+
+  handlePropUpdate() {
+    if (this.props.geoData) {
+      const { latitude, longitude } = this.props.geoData
+      this.setState({
+        mapCenter: {
+          lat: latitude,
+          lng: longitude
+        },
+        hasData: true
+      })
+    }
   }
 
   render() {
-    const { geoData, defaultCenter } = this.state;
+    const { mapCenter, hasData } = this.state;
+    const { lat, lng } = mapCenter;
     return (
       <MapDiv>
-        {!isEmpty(geoData) && (
-          <GoogleMapReact
-            bootstrapURLKeys={{ key: "AIzaSyAVwL4PEHFXQShKmnD6UPqtqBZEvBNQ86U" }}
-            defaultCenter={{lat: geoData.location.lat, lng: geoData.location.lng}}
-            defaultZoom={14}
-            // center={{lat: geoData.location.lat, lng: geoData.location.lng }}
-            // yesIWantToUseGoogleMapApiInternals
-            // onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, geoData)}
+        {!(hasData) && (
+          <PlaceHolderImage src={loadingGif}></PlaceHolderImage>
+        )}
+        {(hasData) && (
+          <GoogleMap
+            bootstrapURLKeys={{ key: "" }}
+            zoom={14}
+            center={{ lat, lng }}
+            options={{fullscreenControl: false, zoomControl: false}}
           >
             <MapMarker 
-              lat={geoData.location.lat}
-              lng={geoData.location.lng}
+              lat={lat}
+              lng={lng}
             />
-          </GoogleMapReact>
+          </GoogleMap>
         )}
       </MapDiv>
     )
   }
 }
 
+const PlaceHolderImage = styled.img`
+  display: block;
+  margin: auto;
+  padding-top: 200px;
+  @media (max-width: 770px ) {
+    padding-top: 300px;
+  }
+`
 
 const MapMarker = () => {
   return <div>
@@ -66,36 +88,5 @@ const MapDiv = styled.div`
     top: 455px;
   }
 `
-
-// // Return map bounds based on list of places
-// const getMapBounds = (map, maps, geoData) => {
-//   const bounds = new maps.LatLngBounds();
-
-//   bounds.extend(new maps.LatLng(
-//     geoData.location.lat,
-//     geoData.location.lng,
-//   ));
-//   return bounds;
-// };
-
-// // Re-center map when resizing the window
-// const bindResizeListener = (map, maps, bounds) => {
-//   maps.event.addDomListenerOnce(map, 'idle', () => {
-//     maps.event.addDomListener(window, 'resize', () => {
-//       map.fitBounds(bounds);
-//     });
-//   });
-// };
-
-// // Fit map to its bounds after the api is loaded
-// const apiIsLoaded = (map, maps, geoData) => {
-//   // Get bounds by our places
-//   const bounds = getMapBounds(map, maps, geoData);
-//   // Fit map to bounds
-//   map.fitBounds(bounds);
-//   // Bind the resize listener
-//   bindResizeListener(map, maps, bounds);
-// };
-
 
 export default MapView;

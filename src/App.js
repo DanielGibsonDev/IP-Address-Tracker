@@ -4,48 +4,60 @@ import Search from './components/Search.js'
 import KeyInfo from './components/KeyInfo.js'
 import MapView from './components/MapView.js'
 import './App.css';
-import backgroundPattern from './pattern-bg.png';
+import backgroundPattern from './images/pattern-bg.png';
+console.log(process.env.REACT_APP_GOOGLE_API_KEY)
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      searchValue: "",
+      loadingAPI: false,
       geoData: [],
-      errorAPI: ""
+      errorAPI: ''
     }
   }
 
   onSearchSubmit = (value) => {
-    this.setState({
-      searchValue: value
-    })
+    this.setState({ loadingAPI: true })
     this.handleGetAPI(value)
   }
 
+  // Handle search query for IP address or domain name
   async handleGetAPI(searchQuery) {
     try {
-      const response = await fetch(`https://cors-anywhere.herokuapp.com/https://geo.ipify.org/api/v1?apiKey=ipAddress=${searchQuery}`);
+      const response = await fetch(`https://json.geoiplookup.io/${searchQuery}`);
       const json = await response.json();
-      this.setState({ geoData: json })
+      this.setState({ geoData: json, loadingAPI: false })
     } catch (error) {
       console.log(error);
       this.setState({ errorAPI: error })
     }
   }
 
-// const App = () => {
+  // On first page load show the users IP Address and Geo location on map
+  async componentDidMount() {
+    try {
+      const response = await fetch(`https://json.geoiplookup.io/`);
+      const json = await response.json();
+      this.setState({ geoData: json })
+    } catch (error) {
+      console.log(error)
+      this.setState({ errorAPI: error })
+    }
+  }
+
   render() {
+    const { geoData, loadingAPI } = this.state;
     return (
       <div>
         <BackgroundImg />
         <Container>
           <Title>IP Address Tracker</Title>
-          <Search onSearchSubmit={this.onSearchSubmit} inputError={this.state.geoData.messages ? "Error: " + this.state.geoData.messages : ''} />
-          <KeyInfo APIData={this.state.geoData} />
+          <Search onSearchSubmit={this.onSearchSubmit} inputError={geoData.error ? "Error: " + geoData.error : ''} loadingAPI={loadingAPI} />
+          <KeyInfo geoData={geoData} />
         </Container>
-        <MapView />
+        <MapView geoData={geoData} />
       </div>
     )
   }

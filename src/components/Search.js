@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import '../App.css';
+import loadingGif from '../images/loading-img.svg';
 
 class Search extends Component {
   constructor(props) {
@@ -25,6 +26,8 @@ class Search extends Component {
   }
 
   render() {
+    const { hasBorder, searchInput } = this.state
+    const { inputError, loadingAPI } = this.props
     return (
       <SearchForm onSubmit={this.handleSubmit}>
         <WhiteBackground />
@@ -32,15 +35,18 @@ class Search extends Component {
           <SearchInput 
             type="text" 
             placeholder="" 
-            className={` ${this.state.hasBorder ? "has-content" : ""} ${this.props.inputError ? "error-border" : ""}`}
-            value={ this.state.searchInput } 
+            className={` ${hasBorder ? "has-content" : ""} ${inputError ? "error-border" : ""} `}
+            value={ searchInput } 
             onChange={ this.handleOnChange } 
           />
+          {(loadingAPI) && (
+            <LoadingImg src={loadingGif} alt=""/>
+          )}
           <Label>Search for any IP address or domain</Label>
           <ErrorMessage 
-            className={ this.props.inputError ? "" : "hide-error-message"}
+            className={ inputError ? "" : "hide-error-message"}
           >
-            {this.props.inputError}
+            {inputError}
           </ErrorMessage>
         </InputEffect>
         
@@ -148,7 +154,13 @@ const ErrorMessage = styled.div`
   background-color: #FFBABA;
   padding: 3px 10px;
   border-radius: 0 0 10px 10px;
+`
 
+const LoadingImg = styled.img`
+  position: absolute;
+  right: 10px;
+  top: 2px;
+  height: 52px;
 `
 
 const iconArrow = <svg xmlns="http://www.w3.org/2000/svg" width="11" height="14"><path fill="none" stroke="#FFF" strokeWidth="3" d="M2 1l6 6-6 6"/></svg>
