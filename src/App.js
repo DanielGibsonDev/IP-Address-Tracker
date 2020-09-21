@@ -5,7 +5,6 @@ import KeyInfo from './components/KeyInfo.js'
 import MapView from './components/MapView.js'
 import './App.css';
 import backgroundPattern from './images/pattern-bg.png';
-console.log(process.env.REACT_APP_GOOGLE_API_KEY)
 
 class App extends Component {
   constructor(props) {

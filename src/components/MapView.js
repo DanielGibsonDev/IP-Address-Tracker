@@ -46,7 +46,7 @@ class MapView extends Component {
         )}
         {(hasData) && (
           <GoogleMap
-            bootstrapURLKeys={{ key: "" }}
+            bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_API_KEY }}
             zoom={14}
             center={{ lat, lng }}
             options={{fullscreenControl: false, zoomControl: false}}
