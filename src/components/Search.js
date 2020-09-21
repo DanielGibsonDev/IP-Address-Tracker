@@ -29,7 +29,7 @@ class Search extends Component {
     const { hasBorder, searchInput } = this.state
     const { inputError, loadingAPI } = this.props
     return (
-      <SearchForm onSubmit={this.handleSubmit}>
+      <SearchForm onSubmit={this.handleSubmit} aria-label="Search form">
         <WhiteBackground />
         <InputEffect>
           <SearchInput 
@@ -38,9 +38,10 @@ class Search extends Component {
             className={` ${hasBorder ? "has-content" : ""} ${inputError ? "error-border" : ""} `}
             value={ searchInput } 
             onChange={ this.handleOnChange } 
+            aria-label="Search IP Address or Domain Name"
           />
           {(loadingAPI) && (
-            <LoadingImg src={loadingGif} alt=""/>
+            <LoadingImg alt="loading dots" src={loadingGif} alt=""/>
           )}
           <Label>Search for any IP address or domain</Label>
           <ErrorMessage 
@@ -50,7 +51,7 @@ class Search extends Component {
           </ErrorMessage>
         </InputEffect>
         
-        <SearchSubmit type="submit">{iconArrow}</SearchSubmit>
+        <SearchSubmit type="submit" aria-label="Submit button">{iconArrow}</SearchSubmit>
       </SearchForm>
     )
   }

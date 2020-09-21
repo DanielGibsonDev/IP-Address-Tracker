@@ -50,7 +50,7 @@ class App extends Component {
     const { geoData, loadingAPI } = this.state;
     return (
       <div>
-        <BackgroundImg />
+        <BackgroundImg alt="blue roads" />
         <Container>
           <Title>IP Address Tracker</Title>
           <Search onSearchSubmit={this.onSearchSubmit} inputError={geoData.error ? "Error: " + geoData.error : ''} loadingAPI={loadingAPI} />

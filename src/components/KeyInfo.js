@@ -43,28 +43,28 @@ class KeyInfo extends Component {
         <KeyInfoElement>
           <Heading>IP Address</Heading>
           <Value>
-            { !(ipAddress) && ( <LoadingImg src={loadingGif}></LoadingImg> )}
+            { !(ipAddress) && ( <LoadingImg alt="loading dots" src={loadingGif}></LoadingImg> )}
             {ipAddress}
           </Value>
         </KeyInfoElement>
         <KeyInfoElement>
           <Heading>Location</Heading>
           <Value>
-            { !(location) && ( <LoadingImg src={loadingGif}></LoadingImg> )}
+            { !(location) && ( <LoadingImg alt="loading dots" src={loadingGif}></LoadingImg> )}
             {location}
           </Value>
         </KeyInfoElement>
         <KeyInfoElement>
           <Heading>TimeZone</Heading>
           <Value>
-            { !(timezone) && ( <LoadingImg src={loadingGif}></LoadingImg> )}
+            { !(timezone) && ( <LoadingImg alt="loading dots" src={loadingGif}></LoadingImg> )}
             {timezone}
           </Value>
         </KeyInfoElement>
         <KeyInfoElement>
           <Heading>ISP</Heading>
           <Value>
-            { !(isp) && ( <LoadingImg src={loadingGif}></LoadingImg> )}
+            { !(isp) && ( <LoadingImg alt="loading dots" src={loadingGif}></LoadingImg> )}
             {isp}
           </Value>
         </KeyInfoElement>

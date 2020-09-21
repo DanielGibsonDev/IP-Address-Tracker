@@ -42,7 +42,7 @@ class MapView extends Component {
     return (
       <MapDiv>
         {!(hasData) && (
-          <PlaceHolderImage src={loadingGif}></PlaceHolderImage>
+          <PlaceHolderImage alt="loading dots large" src={loadingGif}></PlaceHolderImage>
         )}
         {(hasData) && (
           <GoogleMap
