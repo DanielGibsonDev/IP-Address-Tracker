@@ -4,7 +4,7 @@
 
 ## Welcome! 👋
 
-This project uses a geolocation API called [https://geoiplookup.io/](GeoIPLookup.io) to find key information plus latitude and longitude coordinates which is then used to show the location using Google Maps API.
+This project uses a geolocation API called [GeoIPLookup.io](https://geoiplookup.io/) to find key information plus latitude and longitude coordinates which is then used to show the location using Google Maps API.
 
 This was a fun project to make and great for refreshing on React.js. 
 
